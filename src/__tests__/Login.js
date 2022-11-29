@@ -7,7 +7,9 @@ import Login from "../containers/Login.js";
 import { ROUTES } from "../constants/routes";
 import { fireEvent, screen } from "@testing-library/dom";
 
+// Étant donné que je suis un utilisateur sur la page de connexion
 describe("Given that I am a user on login page", () => {
+  // Quand je ne remplis pas les champs et que je clique sur le bouton Employé Se connecter
   describe("When I do not fill fields and I click on employee button Login In", () => {
     test("Then It should renders Login page", () => {
       document.body.innerHTML = LoginUI();
@@ -26,7 +28,7 @@ describe("Given that I am a user on login page", () => {
       expect(screen.getByTestId("form-employee")).toBeTruthy();
     });
   });
-
+  // Lorsque je remplis les champs dans un mauvais format et que je clique sur le bouton de l'employé
   describe("When I do fill fields in incorrect format and I click on employee button Login In", () => {
     test("Then It should renders Login page", () => {
       document.body.innerHTML = LoginUI();
@@ -47,8 +49,9 @@ describe("Given that I am a user on login page", () => {
       expect(screen.getByTestId("form-employee")).toBeTruthy();
     });
   });
-
+  // Lorsque je remplis les champs dans le bon format et que je clique sur le bouton de l'employé
   describe("When I do fill fields in correct format and I click on employee button Login In", () => {
+    // Ensuite, je devrais être identifié en tant qu'employé dans l'application
     test("Then I should be identified as an Employee in app", () => {
       document.body.innerHTML = LoginUI();
       const inputData = {
@@ -110,15 +113,17 @@ describe("Given that I am a user on login page", () => {
         })
       );
     });
-
+    // Il devrait afficher la page Bills
     test("It should renders Bills page", () => {
       expect(screen.getAllByText("Mes notes de frais")).toBeTruthy();
     });
   });
 });
-
-describe("Given that I am a user on login page", () => {
+// Étant donné que je suis un administrateur sur la page de connexion
+describe("Given that I am a admin on login page", () => {
+  // Quand je ne remplis pas les champs et que je clique sur le bouton admin Se connecter
   describe("When I do not fill fields and I click on admin button Login In", () => {
+    // Ensuite, il devrait rendre la page de connexion
     test("Then It should renders Login page", () => {
       document.body.innerHTML = LoginUI();
 
@@ -136,8 +141,9 @@ describe("Given that I am a user on login page", () => {
       expect(screen.getByTestId("form-admin")).toBeTruthy();
     });
   });
-
+  // Lorsque je remplis des champs dans un format incorrect et que je clique sur le bouton d'administration Connexion
   describe("When I do fill fields in incorrect format and I click on admin button Login In", () => {
+    // Ensuite, il devrait rendre la page de connexion
     test("Then it should renders Login page", () => {
       document.body.innerHTML = LoginUI();
 
@@ -189,15 +195,12 @@ describe("Given that I am a user on login page", () => {
         writable: true,
       });
 
-      // we have to mock navigation to test it
       const onNavigate = (pathname) => {
         document.body.innerHTML = ROUTES({ pathname });
       };
 
       let PREVIOUS_LOCATION = "";
-
       const store = jest.fn();
-
       const login = new Login({
         document,
         localStorage: window.localStorage,
@@ -208,6 +211,7 @@ describe("Given that I am a user on login page", () => {
 
       const handleSubmit = jest.fn(login.handleSubmitAdmin);
       login.login = jest.fn().mockResolvedValue({});
+
       form.addEventListener("submit", handleSubmit);
       fireEvent.submit(form);
       expect(handleSubmit).toHaveBeenCalled();
@@ -222,7 +226,6 @@ describe("Given that I am a user on login page", () => {
         })
       );
     });
-
     test("It should renders HR dashboard page", () => {
       expect(screen.queryByText("Validations")).toBeTruthy();
     });
