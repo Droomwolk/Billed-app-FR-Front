@@ -1,8 +1,8 @@
 /**
  * @jest-environment jsdom
  */
-
-import { screen, waitFor } from "@testing-library/dom";
+import "@testing-library/jest-dom";
+import { screen, waitFor, getByTestId } from "@testing-library/dom";
 import BillsUI from "../views/BillsUI.js";
 import { bills } from "../fixtures/bills.js";
 import { ROUTES, ROUTES_PATH } from "../constants/routes.js";
@@ -18,7 +18,9 @@ const onNavigate = (pathname) => {
   document.body.innerHTML = ROUTES({ pathname, data: bills });
 };
 describe("Given I am connected as an employee", () => {
+  // Quand je suis sur la page des note de frais, il y a des notes de frais, et il y en a une en attente
   describe("When I am on Bills page, there are bills, and there is one pending", () => {
+    // Ensuite, getBills par statut en attente devrait retourner 1 facture
     test("Then, getBills by pending status should return 1 bill", () => {
       const getAllBills = filteredBills(bills, "pending");
       expect(getAllBills.length).toBe(1);
@@ -42,6 +44,7 @@ describe("Given I am connected as an employee", () => {
   });
   // Quand je suis sur la page Factures
   describe("When I am on Bills Page", () => {
+    // Ensuite, l'icône du projet de loi en disposition verticale doit être mise en évidence
     test("Then bill icon in vertical layout should be highlighted", async () => {
       Object.defineProperty(window, "localStorage", {
         value: localStorageMock,
@@ -63,6 +66,7 @@ describe("Given I am connected as an employee", () => {
       await waitFor(() => windowIcon);
       expect(windowIcon).toHaveClass("active-icon");
     });
+    // Les factures doivent ensuite être classées du plus ancien au plus récent
     test("Then bills should be ordered from earliest to latest", () => {
       document.body.innerHTML = BillsUI({ data: bills });
       const dates = screen
@@ -71,8 +75,8 @@ describe("Given I am connected as an employee", () => {
         )
         .map((a) => a.innerHTML);
       // modification bug
-      //const antiChrono = (a, b) => ((a < b) ? 1 : -1)
-      const antiChrono = (a, b) => (a > b ? 0 : -1);
+      const antiChrono = (a, b) => (a < b ? 1 : -1);
+      // const antiChrono = (a, b) => (a > b ? 0 : -1);
       const datesSorted = [...dates].sort(antiChrono);
       //const datesSorted = dates.sort(antiChrono)
       expect(dates).toEqual(datesSorted);

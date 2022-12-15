@@ -11,6 +11,7 @@ import { fireEvent, screen } from "@testing-library/dom";
 describe("Given that I am a user on login page", () => {
   // Quand je ne remplis pas les champs et que je clique sur le bouton Employé Se connecter
   describe("When I do not fill fields and I click on employee button Login In", () => {
+    // Ensuite, il devrait rendre la page de connexion
     test("Then It should renders Login page", () => {
       document.body.innerHTML = LoginUI();
 
@@ -195,6 +196,7 @@ describe("Given that I am a admin on login page", () => {
         writable: true,
       });
 
+      // We have to mock navigation to test it
       const onNavigate = (pathname) => {
         document.body.innerHTML = ROUTES({ pathname });
       };
@@ -211,7 +213,6 @@ describe("Given that I am a admin on login page", () => {
 
       const handleSubmit = jest.fn(login.handleSubmitAdmin);
       login.login = jest.fn().mockResolvedValue({});
-
       form.addEventListener("submit", handleSubmit);
       fireEvent.submit(form);
       expect(handleSubmit).toHaveBeenCalled();
