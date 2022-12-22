@@ -19,10 +19,11 @@ const row = (bill) => {
     `;
 };
 
+// BUG NOTE DE FRAIS NON TRIER
 const rows = (data) => {
   return data && data.length
     ? data
-        .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+        .sort((a, b) => b.date - a.date)
         .map((bill) => row(bill))
         .join("")
     : "";
